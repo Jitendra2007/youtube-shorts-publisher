@@ -1,0 +1,70 @@
+name: Daily YouTube Shorts Cloud Publisher
+
+on:
+  schedule:
+    # Runs automatically every day at 14:30 UTC (8:00 PM IST)
+    - cron: '30 14 * * *'
+  workflow_dispatch:
+    inputs:
+      engine:
+        description: 'Choose Shorts Engine to run'
+        required: true
+        default: 'curiosity_scenery'
+        type: choice
+        options:
+          - 'curiosity_scenery'
+          - 'math_equations'
+          - 'special_events'
+      day:
+        description: 'Day Number (1-30) for Math Equations Series'
+        required: false
+        default: '1'
+        type: string
+      minutes:
+        description: 'Target minutes of Shorts to generate (for curiosity marathon)'
+        required: false
+        default: '30'
+        type: string
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install FFmpeg & System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests imageio-ffmpeg edge-tts playwright google-api-python-client google-auth-oauthlib
+          playwright install chromium --with-deps
+
+      - name: Restore YouTube OAuth Credentials
+        run: |
+          echo "${{ secrets.YOUTUBE_TOKEN_JSON }}" > token.json
+
+      - name: Run YouTube Shorts Cloud Engine
+        run: |
+          ENGINE="${{ github.event.inputs.engine || 'curiosity_scenery' }}"
+          MINUTES="${{ github.event.inputs.minutes || '30' }}"
+          DAY="${{ github.event.inputs.day || '1' }}"
+          echo "Executing engine: $ENGINE | Day: $DAY | Minutes: $MINUTES"
+          
+          if [ "$ENGINE" = "curiosity_scenery" ]; then
+            python curiosity_scenery_shorts_engine.py --mode marathon --minutes "$MINUTES"
+          elif [ "$ENGINE" = "math_equations" ]; then
+            python curiosity_scenery_shorts_engine.py --mode math --day "$DAY"
+          else
+            python daily_events_engine.py
+          fi
