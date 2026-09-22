@@ -285,14 +285,20 @@ def get_category_bgm(category: str) -> str:
 def assemble_final_with_bgm(video_path: str, output_path: str, category: str = "", duration: float = 60.0):
     ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
     bgm = get_category_bgm(category)
-    t_twist = duration * 0.68
+    t_twist = duration * 0.48  # Mid-video pattern interrupt around 45-50% mark
+    fade_out_start = max(0.0, duration - 1.0)
 
     if bgm and os.path.exists(bgm):
-        # Audio ducking: Narration at 100% volume, BGM at ~ -22dB (volume=0.08)
-        # Drop BGM to complete silence for 0.25s at the twist revelation
+        # Audio Ducking Standard:
+        # 1. Voice at 100% volume
+        # 2. BGM ducked to 18% (volume=0.18) with 1s fade-in and 1s fade-out
+        # 3. 0.25s silence at the mid-video pattern interrupt / twist reveal
         filter_complex = (
             f"[0:a]volume=1.0[voice];"
-            f"[1:a]volume=0.08,volume=enable='between(t,{t_twist:.2f},{t_twist+0.25:.2f})':volume=0.0,"
+            f"[1:a]volume=0.18,"
+            f"afade=t=in:st=0:d=1,"
+            f"afade=t=out:st={fade_out_start:.2f}:d=1,"
+            f"volume=enable='between(t,{t_twist:.2f},{t_twist+0.25:.2f})':volume=0.0,"
             f"aloop=loop=-1:size=2e+09[bgm];"
             f"[voice][bgm]amix=inputs=2:duration=first[aout]"
         )
