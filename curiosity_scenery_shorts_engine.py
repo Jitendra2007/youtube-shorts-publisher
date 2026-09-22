@@ -192,7 +192,7 @@ def render_scenery_short(bg_image: str, audio_path: str, narration_text: str,
         vf = (
             f"scale=1440:2560:force_original_aspect_ratio=increase,"
             f"crop=1080:1920:'(iw-1080)*(0.5+0.2*sin(t/2))':'(ih-1920)/2',"
-            f"zoompan=z='1.05+0.10*abs(sin(on/25))':d={int(duration*30)}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920,"
+            f"zoompan=z='1.05+0.10*abs(sin(on/25))':d={int(duration*30)}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920:fps=30,"
             f"eq=contrast=1.18:brightness=0.03:saturation=1.35,"
             f"vignette=PI/4"
             f"{eq_overlay}"
@@ -203,7 +203,7 @@ def render_scenery_short(bg_image: str, audio_path: str, narration_text: str,
         vf = (
             f"scale=1440:2560:force_original_aspect_ratio=increase,"
             f"crop=1080:1920:'(iw-1080)*(0.5+0.15*cos(t/{duration}))':'(ih-1920)/2',"
-            f"zoompan=z='min(pzoom+0.0008,1.30)':d={int(duration*30)}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920,"
+            f"zoompan=z='min(pzoom+0.0008,1.30)':d={int(duration*30)}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920:fps=30,"
             f"eq=contrast=1.22:brightness=0.04:saturation=1.40,"
             f"vignette=PI/3.5"
             f"{eq_overlay}"
@@ -214,7 +214,7 @@ def render_scenery_short(bg_image: str, audio_path: str, narration_text: str,
         vf = (
             f"scale=1440:2560:force_original_aspect_ratio=increase,"
             f"crop=1080:1920:'(iw-1080)*(0.5+0.3*sin(t/{duration}))':'(ih-1920)/2',"
-            f"zoompan=z='min(pzoom+0.0005,1.25)':d={int(duration*30)}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920,"
+            f"zoompan=z='min(pzoom+0.0005,1.25)':d={int(duration*30)}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1080x1920:fps=30,"
             f"eq=contrast=1.15:brightness=0.02:saturation=1.28,"
             f"vignette=PI/3.5"
             f"{eq_overlay}"
@@ -224,6 +224,7 @@ def render_scenery_short(bg_image: str, audio_path: str, narration_text: str,
 
     cmd = [
         ffmpeg, "-y",
+        "-framerate", "30",
         "-loop", "1", "-i", bg_image,
         "-i", audio_path,
         "-vf", vf,
