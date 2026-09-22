@@ -567,6 +567,57 @@ def run_math_day_batch(day: int = 1, upload: bool = False) -> list:
     print("\n" + "=" * 70)
     print(f"  🏁  DAY {day:02d} MATHEMATICS BATCH COMPLETE: {len(rendered_files)}/10 Rendered")
     print("=" * 70 + "\n")
+def run_production_scripts_day_batch(day: int = 1, upload: bool = False) -> list:
+    """
+    Renders all 15 high-retention production track scripts for a specific day
+    directly from scritps.txt.
+    """
+    try:
+        from load_production_scripts import get_scripts_for_day
+    except ImportError:
+        print("❌ load_production_scripts module not found.")
+        return []
+
+    day_scripts = get_scripts_for_day(day)
+    if not day_scripts:
+        print(f"⚠️ No scripts found for Day {day} in scritps.txt")
+        return []
+
+    print("\n" + "=" * 70)
+    print(f"  🎬  RENDERING DAY {day:02d} PRODUCTION SCRIPTS (15 SHORTS / TRACKS)")
+    print(f"  📊  Loaded {len(day_scripts)} production scripts from scritps.txt")
+    print("=" * 70 + "\n")
+
+    rendered_files = []
+    for idx, story in enumerate(day_scripts, 1):
+        print(f"\n{'─'*70}")
+        print(f"  [{idx:02d}/{len(day_scripts)}] Rendering: {story['title']}")
+        print(f"  Vibe: [{story.get('bgm_vibe', 'psychology_mystery')}] | Voice: [{story.get('voice_style', 'default')}]")
+        if story.get("formula"):
+            print(f"  Formula HUD : [{story['formula']}]")
+        print(f"{'─'*70}")
+
+        try:
+            video_path = asyncio.run(process_story_async(story))
+            rendered_files.append(video_path)
+            if upload:
+                desc = (
+                    f"{story['title']}\n\n"
+                    "Daily High-Retention Mind-Expanding Shorts.\n"
+                    "Subscribe for one daily thought that changes how you see reality!\n\n"
+                    + " ".join(f"#{t}" for t in story["tags"])
+                )
+                try:
+                    upload_url = upload_to_youtube(video_path, story["youtube_title"], desc, story["tags"])
+                    print(f"  ✅  Uploaded: {upload_url}")
+                except Exception as up_err:
+                    print(f"  ⚠️  Upload error: {up_err}")
+        except Exception as e:
+            print(f"  ❌  Error rendering {story['title']}: {e}")
+
+    print("\n" + "=" * 70)
+    print(f"  🏁  DAY {day:02d} PRODUCTION SCRIPTS COMPLETE: {len(rendered_files)}/{len(day_scripts)} Rendered")
+    print("=" * 70 + "\n")
     return rendered_files
 
 
@@ -576,15 +627,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Curiosity Scenery & Mathematics Shorts Engine")
     parser.add_argument(
         "--mode",
-        choices=["single", "marathon", "math"],
-        default="marathon",
-        help="'single' = 1 curiosity short. 'marathon' = 30-min automation. 'math' = 10-equation day batch."
+        choices=["single", "marathon", "math", "production"],
+        default="production",
+        help="'production' = render 15 tracks from scritps.txt. 'math' = 10-equation day batch. 'single' = 1 short. 'marathon' = 30-min stream."
     )
     parser.add_argument(
         "--day",
         type=int,
         default=1,
-        help="Day number (1-30) for math mode (default: 1)"
+        help="Day number (1-31) for production/math mode (default: 1)"
     )
     parser.add_argument(
         "--minutes",
@@ -601,7 +652,10 @@ if __name__ == "__main__":
 
     do_upload = not args.no_upload
 
-    if args.mode == "math":
+    if args.mode == "production":
+        print(f"[MODE] Production Scripts (scritps.txt) — Day {args.day} (15 Tracks)")
+        run_production_scripts_day_batch(day=args.day, upload=do_upload)
+    elif args.mode == "math":
         print(f"[MODE] Mathematics Curriculum — Day {args.day} Batch (10 Shorts)")
         run_math_day_batch(day=args.day, upload=do_upload)
     elif args.mode == "single":
@@ -610,6 +664,7 @@ if __name__ == "__main__":
     else:
         print(f"[MODE] Marathon — target {args.minutes} minutes of shorts")
         run_nonstop_30min(target_minutes=args.minutes, upload=do_upload)
+
 
 
 
