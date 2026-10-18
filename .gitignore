@@ -1,6 +1,4 @@
 __pycache__/
-*.mp4
-*.mp3
 *.wav
 *.raw
 *.db
@@ -8,3 +6,11 @@ temp_*
 output_*
 token.json
 client_secrets.json
+
+# Media defaults
+*.mp4
+*.mp3
+
+# Whitelist devotional media assets for 24/7 cloud live streaming
+!assets/devotional/*.mp4
+!assets/devotional/audio/*.mp3

@@ -1,0 +1,61 @@
+name: Daily Morning Devotional YouTube Live Stream
+
+on:
+  schedule:
+    # 23:30 UTC = 05:00 AM IST (Runs every morning from 5:00 AM to 8:30 AM IST)
+    - cron: '30 23 * * *'
+  workflow_dispatch:
+    inputs:
+      test_run:
+        description: 'Run full 3.5hr or test stream?'
+        required: true
+        default: 'full_schedule'
+        type: choice
+        options:
+          - 'full_schedule'
+          - 'test_10_minutes'
+
+jobs:
+  live-stream:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240 # 4 hours max
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install FFmpeg & System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-api-python-client google-auth-oauthlib google-auth-httplib2
+
+      - name: Restore YouTube OAuth Credentials
+        run: |
+          echo "${{ secrets.YOUTUBE_TOKEN_JSON }}" > token.json
+
+      - name: Run Cloud Morning Devotional Streamer
+        run: |
+          if [ "${{ github.event.inputs.test_run }}" = "test_10_minutes" ]; then
+            echo "Running 10-minute test live stream..."
+            python -c "
+            import cloud_morning_devotional_streamer as cms
+            youtube = cms.get_authenticated_service()
+            bid, skey = cms.ensure_broadcast_active(youtube)
+            segs = cms.build_muxed_segments()
+            manifest = cms.generate_concat_manifest(segs, cycles=1)
+            cms.start_rtmp_stream(manifest, skey, max_minutes=10)
+            "
+          else
+            echo "Starting Full 3.5-Hour Morning Devotional Live Stream..."
+            python cloud_morning_devotional_streamer.py
+          fi
