@@ -968,7 +968,7 @@
     "url": "https://youtu.be/iRbN8rl4wms",
     "file": "john_wick_neon_master.mp4",
     "upload_date": "2026-10-17",
-    "status": "UNLISTED_VERIFICATION"
+    "status": "PUBLIC"
   },
   "viral_interstellar_heartbreaking_promise": {
     "title": "The Most Heartbreaking Promise In Cinema \u23f3\ud83d\ude80 #shorts #interstellar #movie #emotional",
@@ -976,7 +976,7 @@
     "url": "https://youtu.be/evrODd9m7_M",
     "file": "interstellar_celestial_master.mp4",
     "upload_date": "2026-10-17",
-    "status": "UNLISTED_VERIFICATION"
+    "status": "PUBLIC"
   },
   "viral_red_notice_egg_heist_comedy": {
     "title": "He Thought It Was Going To Be Easy \ud83d\udc80\ud83e\udd23 #shorts #rednotice #funny #moviescene",
@@ -984,6 +984,87 @@
     "url": "https://youtu.be/0blxmSByFsI",
     "file": "red_notice_egg_comedy_master.mp4",
     "upload_date": "2026-10-17",
-    "status": "UNLISTED_VERIFICATION"
+    "status": "PUBLIC"
+  },
+  "search_oct18_deepseek_v3_open_weights_disruption": {
+    "title": "This Open Source AI Just Embarrassed Silicon Valley \ud83e\udde0\u26a1 #shorts #ai #tech",
+    "video_id": "R7BMQvBM0aE",
+    "url": "https://youtu.be/R7BMQvBM0aE",
+    "file": "search_oct18_deepseek_v3_open_weights_disruption_viral_master.mp4",
+    "upload_date": "2026-10-18",
+    "publish_at": "2026-10-18T04:00:00Z",
+    "status": "SCHEDULED"
+  },
+  "search_oct18_windows_12_modular_core_leak": {
+    "title": "Windows 12 Just Leaked: Microsoft Changed Everything \ud83d\udcbb\ud83d\udc40 #shorts #tech #windows",
+    "video_id": "w-F7WXSDKUg",
+    "url": "https://youtu.be/w-F7WXSDKUg",
+    "file": "search_oct18_windows_12_modular_core_leak_viral_master.mp4",
+    "upload_date": "2026-10-18",
+    "publish_at": "2026-10-18T05:30:00Z",
+    "status": "SCHEDULED"
+  },
+  "search_oct18_jwst_exoplanet_ocean_k218b": {
+    "title": "NASA's Telescope Found Ocean Signals On An Alien Super-Earth \ud83d\udd2d\ud83c\udf0a #shorts #space #nasa",
+    "video_id": "yy-AhOzrR3g",
+    "url": "https://youtu.be/yy-AhOzrR3g",
+    "file": "search_oct18_jwst_exoplanet_ocean_k218b_viral_master.mp4",
+    "upload_date": "2026-10-18",
+    "publish_at": "2026-10-18T07:00:00Z",
+    "status": "SCHEDULED"
+  },
+  "special_oct18_alaska_purchase_2_cents_acre": {
+    "title": "How America Bought Alaska for Just 2 Cents An Acre \u2744\ufe0f\ud83c\uddfa\ud83c\uddf8 #shorts #history #facts",
+    "video_id": "eicTlvl7xTo",
+    "url": "https://youtu.be/eicTlvl7xTo",
+    "file": "special_oct18_alaska_purchase_2_cents_acre_viral_master.mp4",
+    "upload_date": "2026-10-18",
+    "publish_at": "2026-10-18T08:30:00Z",
+    "status": "SCHEDULED"
+  },
+  "special_oct18_thomas_edison_100_year_battery": {
+    "title": "Thomas Edison Died Today in 1931 Leaving A 100-Year Battery Secret \ud83d\udca1\ud83d\udd0b #shorts #science #history",
+    "video_id": "7Sdn6HwPuzs",
+    "url": "https://youtu.be/7Sdn6HwPuzs",
+    "file": "special_oct18_thomas_edison_100_year_battery_viral_master.mp4",
+    "upload_date": "2026-10-18",
+    "publish_at": "2026-10-18T10:00:00Z",
+    "status": "SCHEDULED"
+  },
+  "world_event_oct18_starship_orbital_refueling_breakthrough": {
+    "title": "SpaceX Just Solved The Hardest Engineering Problem In History \ud83d\ude80\ud83c\udf0c #shorts #spacex #elonmusk",
+    "video_id": "dLv8k2-bKMg",
+    "url": "https://youtu.be/dLv8k2-bKMg",
+    "file": "world_event_oct18_starship_orbital_refueling_breakthrough_viral_master.mp4",
+    "upload_date": "2026-10-18",
+    "publish_at": "2026-10-18T11:30:00Z",
+    "status": "SCHEDULED"
+  },
+  "world_event_oct18_crispr_human_blindness_restoration": {
+    "title": "Doctors Used Gene-Editing To Restore Human Sight From Total Darkness \ud83d\udc41\ufe0f\ud83e\uddec #shorts #science #health",
+    "video_id": "QkgfJl_ftoU",
+    "url": "https://youtu.be/QkgfJl_ftoU",
+    "file": "world_event_oct18_crispr_human_blindness_restoration_viral_master.mp4",
+    "upload_date": "2026-10-18",
+    "publish_at": "2026-10-18T13:00:00Z",
+    "status": "SCHEDULED"
+  },
+  "india_oct18_diwali_gold_vs_silver_wealth_comparison": {
+    "title": "Gold vs Silver This Diwali: The 10-Year Return Shocked Everyone \ud83e\ude99\ud83d\udcc8 #shorts #india #finance",
+    "video_id": "h6ptwQsOoUI",
+    "url": "https://youtu.be/h6ptwQsOoUI",
+    "file": "india_oct18_diwali_gold_vs_silver_wealth_comparison_viral_master.mp4",
+    "upload_date": "2026-10-18",
+    "publish_at": "2026-10-18T14:30:00Z",
+    "status": "SCHEDULED"
+  },
+  "india_oct18_upi_atm_cardless_cash_withdrawal": {
+    "title": "Forgot Your ATM Card? Indian ATMs Now Give Cash via UPI QR Code! \ud83c\udfe7\ud83d\udcf2 #shorts #india #tech",
+    "video_id": "NfnH89l9GmI",
+    "url": "https://youtu.be/NfnH89l9GmI",
+    "file": "india_oct18_upi_atm_cardless_cash_withdrawal_viral_master.mp4",
+    "upload_date": "2026-10-18",
+    "publish_at": "2026-10-18T16:00:00Z",
+    "status": "SCHEDULED"
   }
 }
