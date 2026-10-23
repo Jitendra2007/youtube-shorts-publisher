@@ -1,0 +1,67 @@
+name: 24/7 Cloud Shorts Scheduler (10 AM & 10 PM)
+
+on:
+  schedule:
+    # 10:00 AM IST = 04:30 UTC
+    - cron: '30 4 * * *'
+    # 10:00 PM IST = 16:30 UTC
+    - cron: '30 16 * * *'
+  workflow_dispatch:
+    inputs:
+      batch_size:
+        description: 'Number of Shorts to upload in this drop'
+        required: true
+        default: '10'
+        type: string
+
+jobs:
+  cloud-publish-shorts:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🐍 Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-api-python-client google-auth-oauthlib google-auth-httplib2 pillow requests
+
+      - name: 📥 Download Queued Shorts from Cloud Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p cloud_queue_masters
+          gh release download v1-shorts-queue --dir cloud_queue_masters --pattern "*.mp4" --repo Jitendra2007/youtube-shorts-publisher || true
+          ls -la cloud_queue_masters/
+
+      - name: 🚀 Dispatch Cloud Shorts Drop
+        env:
+          YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
+        run: |
+          BATCH="${{ github.event.inputs.batch_size || '10' }}"
+          echo "=========================================================="
+          echo "🚀 WAKING UP 24/7 CLOUD DISPATCHER: BATCH TARGET = $BATCH"
+          echo "=========================================================="
+          python cloud_shorts_dispatcher.py --batch-size "$BATCH"
+
+      - name: 💾 Commit & Push Updated Registry
+        run: |
+          git config --global user.name "CuriousCodex-CloudBot"
+          git config --global user.email "bot@curiouscodex.local"
+          git add uploaded_videos_registry.json
+          if git diff --staged --quiet; then
+            echo "No registry changes to commit."
+          else
+            git commit -m "🤖 [Cloud Bot] Automated Shorts drop completed [skip ci]"
+            git push origin main
+          fi
